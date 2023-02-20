@@ -1,0 +1,55 @@
+Here's my  MATLAB code for calculating the eigenfrequencies and eigenvectors, participation ratio, and polarization sphere using the equations and definitions provided:
+
+
+
+% Define the variables
+N = 1920; % number of atoms in diamond nanothreads
+%N = 1600; % number of atoms in amorphous graphene
+m = ones(N,1); % vector of atomic masses (assuming all atoms have the same mass)
+%V = ...; % potential energy
+
+% Calculate the matrix of force constants Phi
+Phi = zeros(3*N,3*N);
+for i = 1:N
+    for alpha = 1:3
+        for j = 1:N
+            for beta = 1:3
+                d2V = ...; % second derivative of the potential energy with respect to u_ia and u_jb
+                Phi((i-1)*3+alpha,(j-1)*3+beta) = d2V/sqrt(m(i)*m(j));
+            end
+        end
+    end
+end
+
+% Diagonalize the matrix of force constants to obtain the eigenfrequencies and eigenvectors
+[V,D] = eig(Phi); % V contains the eigenvectors and D contains the eigenvalues (squared eigenfrequencies)
+
+% Sort the eigenfrequencies and eigenvectors in ascending order
+[d,ind] = sort(diag(D));
+V = V(:,ind);
+
+% Calculate the participation ratio for each mode
+p = zeros(N,1);
+for lambda = 1:3*N
+    eps = V(:,lambda);
+    p(lambda) = 1/sum(abs(eps).^4);
+end
+
+% Calculate the polarization sphere for a specific mode (e.g. mode 1)
+lambda = 1;
+eps = V(:,lambda);
+e = eps./sqrt(sum(abs(eps).^2));
+x = e(1:3:end);
+y = e(2:3:end);
+z = e(3:3:end);
+
+% Plot the polarization sphere
+figure;
+axis equal;
+scatter3(x,y,z,'filled');
+
+
+Note that this code is only an approximation and may need to be adapted to specific cases. In particular, the calculation of the second derivative of the potential energy with respect to atomic displacements may require some knowledge of the potential energy function used in the analysis.
+
+
+
